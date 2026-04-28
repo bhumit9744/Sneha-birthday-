@@ -1,1 +1,69 @@
-<h1>sorry baby itna time ny tha iske liye but complete kr dunga isko bhi dw..</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#ff6eb4,#ff2d78);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+h1 {
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: rgba(255,255,255,0.9);
+  color: #ff2d78;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+  background: white;
+}
+</style>
+</head>
+
+<body>
+
+<button class="back-btn" onclick="goHome()">⬅ Back</button>
+
+<h1>
+sorry baby itna time ny tha iske liye but complete kr dunga isko bhi dw.. 💖
+</h1>
+
+<script>
+function goHome(){
+  document.body.style.opacity = "0";
+  setTimeout(()=>{
+    window.location.href = "home.html";
+  }, 300);
+}
+</script>
+
+</body>
+</html>
