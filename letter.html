@@ -90,10 +90,32 @@ body{
   to{transform:translateY(-100vh);opacity:0;}
 }
 
+  .back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: rgba(255,255,255,0.9);
+  color: #ff2d78;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+  background: white;
+}
+
 </style>
 </head>
 
 <body>
+  <button class="back-btn" onclick="goHome()">⬅ Back</button>
 
 <!-- ENVELOPE -->
 <div class="envelope" onclick="openLetter()" id="env">
@@ -217,6 +239,13 @@ setInterval(()=>{
 
   setTimeout(()=> heart.remove(), duration*1000);
 }, 1000);
+
+  function goHome(){
+  document.body.style.opacity = "0";
+  setTimeout(()=>{
+    window.location.href = "home.html";
+  }, 300);
+  }
 
 </script>
 
