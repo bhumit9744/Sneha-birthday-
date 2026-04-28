@@ -261,17 +261,29 @@ Aur aaj bhi... it was always you 😌"></div>
 </div>
 
 <!-- AUDIO -->
-<audio id="music" loop>
-  <source src="tumhiho.mp3" type="audio/mp3">
+<audio id="music" loop preload="auto">
+  <source src="tumhiho.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
 /* MUSIC */
+const music = document.getElementById("music");
+
 function startMusic(){
-  const music = document.getElementById("music");
-  music.play().catch(()=>{});
+  music.play()
+    .then(()=>{
+      console.log("playing");
+    })
+    .catch(err=>{
+      console.log("blocked:", err);
+    });
 }
+
+/* start only once on first click anywhere */
+document.body.addEventListener("click", () => {
+  startMusic();
+}, { once: true });
 
 /* AUTO START ON FIRST CLICK */
 document.body.addEventListener("click", startMusic, { once:true });
