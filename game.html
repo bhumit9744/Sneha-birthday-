@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puzzle For You 💖</title>
+
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#ff6eb4,#ff2d78);
+  color:white;
+  text-align:center;
+}
+
+h1 {
+  margin-top:30px;
+}
+
+.main {
+  display:flex;
+  gap:60px;
+  align-items:center;
+  justify-content:center;
+  margin-top:30px;
+}
+
+.board {
+  display:grid;
+  grid-template-columns: repeat(4, 90px);
+  gap:10px;
+}
+
+.slot {
+  width:90px;
+  height:90px;
+  background: rgba(255,255,255,0.2);
+  border-radius:15px;
+}
+
+.pieces {
+  display:grid;
+  grid-template-columns: repeat(4, 90px);
+  gap:10px;
+  margin-top:20px;
+  justify-content:center;
+}
+
+.piece {
+  width:90px;
+  height:90px;
+  border-radius:15px;
+  background-size:360px 360px;
+  cursor:grab;
+  transition:0.2s;
+}
+
+.piece:hover {
+  transform: scale(1.05);
+}
+
+.side {
+  text-align:center;
+}
+
+.preview {
+  width:150px;
+  border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+
+#final {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(#ff6eb4,#ff2d78);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  padding:20px;
+}
+
+.final-img {
+  width:260px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+
+.love-msg {
+  max-width:350px;
+  font-size:1rem;
+  line-height:1.6;
+}
+
+button {
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:#ff2d78;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Complete Our Puzzle ❤️</h1>
+
+<div class="main">
+  <div>
+    <div class="board" id="board"></div>
+    <div class="pieces" id="pieces"></div>
+  </div>
+
+  <div class="side">
+    <img id="preview" class="preview">
+    <p>Hint: Complete me 😉</p>
+  </div>
+</div>
+
+<div id="final">
+  <img id="finalImg" class="final-img">
+  <div class="love-msg" id="msg"></div>
+  <button onclick="nextPuzzle()">Next ➡️</button>
+</div>
+
+<script>
+const size = 4;
+
+/* 🔥 IMAGE FLOW */
+const images = ["img1.jpeg","img2.jpeg","img3.jpeg"];
+
+const messages = [
+`uk jab iss samay ham iskcon me baithe the 
+the only thing i was thinking ki ye samay ruk sa kyu ny jata .. 
+tujhe yaad hai kya we were talking abt krishna ki story idr baithke 
+while looking at that temple oofffo that moment 😭😭😭🤌🏻🤌🏻🤌🏻🤌🏻🤌🏻`,
+
+`jbhi tumhara ye phto dekhta hu esa lgta hai kitnii cutiie bacchi hogi hamari 😍`,
+
+`25-04-26 ❤️  
+
+Lunch ke baad madam ko walk pe jaana tha 😌  
+Mene bola "Ola le lete hai"…  
+par nahi… ziddi motuu 😭💖  
+
+Aur main bas tumhe leke chalta raha ❤️  
+Thoda tired tha… but tumhare saath sab perfect tha 🫶  
+
+Aur haan…  
+tum ziddi ho…  
+par meri ho 😉💖`
+];
+
+/* 🔥 PROGRESS */
+let current = parseInt(localStorage.getItem("level")) || 0;
+
+if(current >= images.length){
+  localStorage.setItem("level",0);
+  current = 0;
+}
+
+let img = images[current];
+
+document.getElementById("preview").src = img;
+
+/* ELEMENTS */
+const board = document.getElementById("board");
+const piecesContainer = document.getElementById("pieces");
+
+let correct = 0;
+
+/* RESET BOARD */
+board.innerHTML = "";
+piecesContainer.innerHTML = "";
+
+/* CREATE SLOTS */
+for(let i=0;i<size*size;i++){
+  let slot = document.createElement("div");
+  slot.className="slot";
+  slot.dataset.index=i;
+
+  slot.ondragover = e => e.preventDefault();
+
+  slot.ondrop = e => {
+    let pieceId = e.dataTransfer.getData("id");
+    let piece = document.getElementById(pieceId);
+
+    if(piece.dataset.correct == slot.dataset.index){
+      slot.appendChild(piece);
+      piece.style.cursor="default";
+      correct++;
+
+      if(correct === size*size){
+        showSuccess();
+      }
+    }
+  };
+
+  board.appendChild(slot);
+}
+
+/* CREATE PIECES */
+let arr = [];
+
+for(let i=0;i<size;i++){
+  for(let j=0;j<size;j++){
+    arr.push({x:i,y:j,index:i*size+j});
+  }
+}
+
+arr.sort(()=>Math.random()-0.5);
+
+arr.forEach((pos,idx)=>{
+  let piece = document.createElement("div");
+  piece.className="piece";
+  piece.id="p"+idx;
+  piece.draggable=true;
+
+  piece.dataset.correct = pos.index;
+
+  piece.style.backgroundImage = `url(${img})`;
+  piece.style.backgroundPosition = `-${pos.y*90}px -${pos.x*90}px`;
+
+  piece.ondragstart = e=>{
+    e.dataTransfer.setData("id",piece.id);
+  };
+
+  piecesContainer.appendChild(piece);
+});
+
+/* SUCCESS */
+function showSuccess(){
+  document.getElementById("final").style.display="flex";
+  document.getElementById("finalImg").src = img;
+  document.getElementById("msg").innerText = messages[current];
+}
+
+/* NEXT */
+function nextPuzzle(){
+  current++;
+  localStorage.setItem("level",current);
+  location.reload();
+}
+</script>
+
+</body>
+</html>
